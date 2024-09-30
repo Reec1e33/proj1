@@ -26,6 +26,7 @@
             background-color: #161b22; /* Darker background for header */
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Add space between title and right items */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -38,35 +39,44 @@
             margin-left: 20px; /* Added margin to move the title to the right */
         }
 
-
-
-        #title.contract {
-            animation: contract 0.5s;
-        }
-
-        @keyframes contract {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(0.9); /* Contract a bit */
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
         #clock {
             font-size: 18px;
-            color: #8b949e; /* Slightly dimmed clock text */
+            color: #8b949e;
+            margin-left: 20px; /* Add space between title and clock */
+        }
+
+        /* Add button style */
+        #translator-button {
+            padding: 8px 16px;
+            background-color: #58a6ff; /* GitHub link color */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 40px; /* Add margin from the right edge */
+        }
+
+        #translator-button:hover {
+            background-color: #4a90e2; /* Darker blue on hover */
+        }
+
+        .right-side {
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div id="title">Reece's WebServer</div>
-    <div id="clock"></div>
+    <div style="display: flex; align-items: center;">
+        <div id="title">Reece's WebServer</div>
+        <div id="clock"></div> <!-- Clock placed 20px to the right of title -->
+    </div>
+    <div class="right-side">
+        <button id="translator-button">Translator</button> <!-- Button aligned to right with space -->
+    </div>
 </header>
 
 <script>
@@ -84,24 +94,18 @@
     setInterval(updateClock, 1000);
     updateClock(); // Call once to initialize immediately
 
-    // Refresh page when the title is clicked and add a contract animation
+    // Refresh page when the title is clicked
     const titleElement = document.getElementById('title');
     titleElement.addEventListener('click', () => {
-        // Add contract class for animation
-        titleElement.classList.add('contract');
+        location.reload();
+    });
 
-        // Remove the contract class after animation finishes
-        setTimeout(() => {
-            titleElement.classList.remove('contract');
-        }, 500);
-
-        // Refresh the page
-        setTimeout(() => {
-            location.reload();
-        }, 500);
+    // Button event listener to navigate to the translator page
+    const translatorButton = document.getElementById('translator-button');
+    translatorButton.addEventListener('click', () => {
+        window.location.href = '/chatgpt'; // Redirect to translator page
     });
 </script>
 
 </body>
 </html>
-~      
