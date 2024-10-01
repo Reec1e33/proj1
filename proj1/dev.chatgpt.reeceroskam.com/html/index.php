@@ -1,6 +1,6 @@
 <?php
 // Set the OpenAI API key
-$apiKey = getenv('OPENAI_API_KEY '); 
+$apiKey = getenv('OPENAI_API_KEY'); 
 
 // Check if the request is POST and contains 'phrase' and 'language'
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['phrase']) && isset($_POST['language'])) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['phrase']) && isset($_P
         'messages' => [
             [
                 'role' => 'system',
-                'content' => 'You are a helpful assistant that translates English phrases into other languages.'
+                'content' => 'You are an assistant that translates English phrases into other languages.'
             ],
             [
                 'role' => 'user',
