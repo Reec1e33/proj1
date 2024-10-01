@@ -38,6 +38,11 @@
             color: #58a6ff; /* GitHub link color */
             margin-right: 20px;
             margin-left: 20px; /* Added margin to move the title to the right */
+            transition: transform 0.2s ease; /* Add smooth animation for contraction */
+        }
+
+        #title.contract {
+            transform: scale(0.9); /* Contract the title slightly */
         }
 
         #clock {
@@ -51,7 +56,6 @@
             text-align: center;
         }
 
-        /* Form styles */
         form {
             display: flex;
             flex-direction: column;
@@ -90,10 +94,15 @@
             cursor: pointer;
             width: 300px;
             font-size: 16px;
+            transition: transform 0.2s ease; /* Add smooth animation for contraction */
         }
 
         button:hover {
             background-color: #4a90e2;
+        }
+
+        button.contract {
+            transform: scale(0.9); /* Contract the button slightly */
         }
 
         #translation-result {
@@ -127,10 +136,8 @@
     <h1>Translation App</h1>
 
     <form id="translate-form">
-        <!-- Textarea input for phrase to be translated -->
         <textarea id="phrase" name="phrase" placeholder="Enter your phrase here"></textarea>
 
-        <!-- Dropdown for language selection -->
         <select id="language" name="language">
             <option value="Spanish">Spanish</option>
             <option value="French">French</option>
@@ -140,7 +147,7 @@
             <option value="Passive Aggressive">Passive Aggressive</option>
         </select>
 
-        <button type="submit">Translate</button>
+        <button type="submit" id="submit-button">Translate</button>
     </form>
 
     <div id="translation-result">Your translation will appear here...</div>
@@ -158,16 +165,23 @@
         clockElement.textContent = `${hours}:${minutes}:${seconds}`;
     }
 
-    // Initialize the clock and update every second
     setInterval(updateClock, 1000);
-    updateClock(); // Call once to initialize immediately
+    updateClock(); // Initialize the clock immediately
 
     // Handle form submission using AJAX
     $('#translate-form').on('submit', function(event) {
-        event.preventDefault();  // Prevent form from refreshing the page
+        event.preventDefault();  // Prevent form refresh
 
         var phrase = $('#phrase').val();
         var language = $('#language').val();
+
+        // Add contract class to the button for animation
+        $('#submit-button').addClass('contract');
+
+        // Remove the contract class after animation finishes
+        setTimeout(() => {
+            $('#submit-button').removeClass('contract');
+        }, 200);  // Remove the class after the animation
 
         $.ajax({
             url: 'https://dev.chatgpt.reeceroskam.com',  // API endpoint
@@ -185,10 +199,24 @@
         });
     });
 
-    // Refresh page when the title is clicked
+    // Handle title click to redirect based on the hostname
     const titleElement = document.getElementById('title');
     titleElement.addEventListener('click', () => {
-        location.reload();
+        // Add contract class for animation
+        titleElement.classList.add('contract');
+
+        // Remove the contract class after animation finishes
+        setTimeout(() => {
+            titleElement.classList.remove('contract');
+        }, 200);
+
+        // Redirect based on current hostname (dev or production)
+        const hostname = window.location.hostname;
+        if (hostname === 'dev.reeceroskam.com') {
+            window.location.href = 'https://dev.reeceroskam.com';  // Redirect to dev site
+        } else {
+            window.location.href = 'https://reeceroskam.com';  // Redirect to production site
+        }
     });
 </script>
 
