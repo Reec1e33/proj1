@@ -128,8 +128,10 @@
 <body>
 
 <header>
-    <div id="title">Reece's WebServer</div>
-    <div id="clock"></div>
+    <div style="display: flex; align-items: center;">
+        <div id="title">Reece's WebServer</div>
+        <div id="clock"></div>
+    </div>
 </header>
 
 <div class="content">

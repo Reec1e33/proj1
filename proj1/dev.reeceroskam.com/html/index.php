@@ -46,7 +46,7 @@
         }
 
         /* Add button style */
-        #translator-button {
+        #translator-button, #calculator-button {
             padding: 8px 16px;
             background-color: #58a6ff; /* GitHub link color */
             color: #ffffff;
@@ -54,10 +54,10 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-right: 40px; /* Add margin from the right edge */
+            margin-right: 10px; /* Add margin between buttons */
         }
 
-        #translator-button:hover {
+        #translator-button:hover, #calculator-button:hover {
             background-color: #4a90e2; /* Darker blue on hover */
         }
 
@@ -76,6 +76,7 @@
     </div>
     <div class="right-side">
         <button id="translator-button">Translator</button> <!-- Button aligned to right with space -->
+        <button id="calculator-button">Calculator</button> <!-- New Calculator button -->
     </div>
 </header>
 
@@ -101,13 +102,17 @@
     // Refresh page when the title is clicked
     const titleElement = document.getElementById('title');
     titleElement.addEventListener('click', () => {
-        location.reload();
+        window.location.href = '/'; // Redirect to home page
     });
-
 
     const translatorButton = document.getElementById('translator-button');
     translatorButton.addEventListener('click', () => {
         window.location.href = '/chatgpt'; // Redirect to translator page
+    });
+
+    const calculatorButton = document.getElementById('calculator-button');
+    calculatorButton.addEventListener('click', () => {
+        window.location.href = '/calculator'; // Redirect to calculator page
     });
 </script>
 

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reece's WebServer - Calculator</title>
+    <title>Reece's WebServer - Advanced Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #0d1117; /* GitHub dark background */
-            color: #c9d1d9; /* GitHub light gray text */
+            background-color: #0d1117;
+            color: #c9d1d9;
             font-family: 'Roboto', sans-serif;
             display: flex;
             justify-content: center;
@@ -46,7 +46,7 @@
             margin-left: 20px;
         }
 
-        #translator-button {
+        #translator-button, #calculator-button {
             padding: 8px 16px;
             background-color: #58a6ff;
             color: #ffffff;
@@ -54,16 +54,11 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-right: 40px;
+            margin-right: 10px;
         }
 
-        #translator-button:hover {
+        #translator-button:hover, #calculator-button:hover {
             background-color: #4a90e2;
-        }
-
-        .right-side {
-            display: flex;
-            align-items: center;
         }
 
         .content {
@@ -71,36 +66,35 @@
             text-align: center;
         }
 
-        form {
+        #calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-gap: 10px;
             margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        input[type="text"], select {
+        input[type="text"] {
+            grid-column: span 4;
             padding: 10px;
+            font-size: 24px;
+            text-align: right;
+            background-color: #161b22;
             border: none;
+            color: #c9d1d9;
             border-radius: 5px;
-            width: 200px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 18px;
             background-color: #161b22;
             color: #c9d1d9;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        button[type="submit"] {
-            padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            background-color: #58a6ff;
-            color: #ffffff;
             cursor: pointer;
-            width: 200px;
-            font-size: 16px;
         }
 
-        button[type="submit"]:hover {
+        button:hover {
             background-color: #4a90e2;
         }
 
@@ -124,19 +118,30 @@
 
 <div class="content">
     <h1>Calculator</h1>
-    <form action="/cgi-bin/calculator" method="post">
-        <input type="text" name="num1" placeholder="Enter first number" required>
-        <input type="text" name="num2" placeholder="Enter second number" required>
-        <select name="operator">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-        <button type="submit">Calculate</button>
+    <form id="calc-form" action="/cgi-bin/calculator" method="post">
+        <div id="calculator">
+            <input type="text" id="calc-input" name="calcInput" readonly>
+            <button type="button" value="1">1</button>
+            <button type="button" value="2">2</button>
+            <button type="button" value="3">3</button>
+            <button type="button" value="+">+</button>
+            <button type="button" value="4">4</button>
+            <button type="button" value="5">5</button>
+            <button type="button" value="6">6</button>
+            <button type="button" value="-">-</button>
+            <button type="button" value="7">7</button>
+            <button type="button" value="8">8</button>
+            <button type="button" value="9">9</button>
+            <button type="button" value="*">*</button>
+            <button type="button" value="C">C</button>
+            <button type="button" value="0">0</button>
+            <button type="button" value="=">=</button>
+            <button type="button" value="/">/</button>
+        </div>
+        <input type="hidden" id="calc-result" name="calcResult">
     </form>
 
-    <div id="result"></div> <!-- This will display the result from the server -->
+    <div id="result"></div>
 </div>
 
 <script>
@@ -166,6 +171,36 @@
     translatorButton.addEventListener('click', () => {
         window.location.href = '/chatgpt';
     });
+
+    // Calculator functionality
+    const inputField = document.getElementById('calc-input');
+    const buttons = document.querySelectorAll('#calculator button');
+    const form = document.getElementById('calc-form');
+    let expression = '';
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.value;
+            if (value === 'C') {
+                expression = '';
+                inputField.value = '';
+            } else if (value === '=') {
+                // Submit form to the backend to calculate the result
+                document.getElementById('calc-result').value = expression;
+                form.submit();
+            } else {
+                expression += value;
+                inputField.value = expression;
+            }
+        });
+    });
+
+    // Fetch result from server and display it
+    const urlParams = new URLSearchParams(window.location.search);
+    const result = urlParams.get('result');
+    if (result) {
+        inputField.value = result;
+    }
 </script>
 
 </body>
