@@ -80,19 +80,23 @@
 </header>
 
 <script>
-    // Function to update the clock every second
     function updateClock() {
         const clockElement = document.getElementById('clock');
         const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
+        let hours = now.getHours();
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
-        clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        hours = hours % 12; // Convert to 12-hour format
+        hours = hours ? hours : 12; // If hours is 0 (midnight), make it 12
+
+        clockElement.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
     }
 
-    // Initialize the clock and update every second
     setInterval(updateClock, 1000);
-    updateClock(); // Call once to initialize immediately
+    updateClock(); // Initialize the clock immediately
+
 
     // Refresh page when the title is clicked
     const titleElement = document.getElementById('title');
