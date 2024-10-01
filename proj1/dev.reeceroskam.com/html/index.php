@@ -100,7 +100,7 @@
         location.reload();
     });
 
-    // Button event listener to navigate to the translator page
+
     const translatorButton = document.getElementById('translator-button');
     translatorButton.addEventListener('click', () => {
         window.location.href = '/chatgpt'; // Redirect to translator page

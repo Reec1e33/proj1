@@ -5,7 +5,7 @@ $api_key = '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';
 // Check if the request is POST and contains 'phrase' and 'language'
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['phrase']) && isset($_POST['language'])) {
     $phrase = $_POST['phrase'];
-    $language = ucfirst(strtolower($_POST['language'])); // Make sure the language is capitalized
+    $language = ucfirst(strtolower($_POST['language'])); 
 
     // Prepare the prompt for ChatGPT
     $prompt = "Translate the following phrase into $language: '$phrase'";
