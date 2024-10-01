@@ -1,6 +1,6 @@
 <?php
 // Set the OpenAI API key
-$api_key = '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';  
+$apiKey = getenv('OPENAI_API_KEY'); 
 
 // Check if the request is POST and contains 'phrase' and 'language'
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['phrase']) && isset($_POST['language'])) {
