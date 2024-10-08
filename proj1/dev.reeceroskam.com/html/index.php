@@ -76,7 +76,7 @@
     </div>
     <div class="right-side">
         <button id="translator-button">Translator</button> <!-- Button aligned to right with space -->
-        <button id="calculator-button">Calculator</button> <!-- New Calculator button -->
+        <button id="calculator-button"> roskam</button> <!-- New Calculator button -->
     </div>
 </header>
 

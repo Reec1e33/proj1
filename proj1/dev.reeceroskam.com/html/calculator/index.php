@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reece's WebServer - Advanced Calculator</title>
+    <title>Reece's WebServer - Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -54,11 +54,16 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-right: 10px;
+            margin-right: 20px;
         }
 
         #translator-button:hover, #calculator-button:hover {
             background-color: #4a90e2;
+        }
+
+        .right-side {
+            display: flex;
+            align-items: center;
         }
 
         .content {
@@ -66,41 +71,30 @@
             text-align: center;
         }
 
-        #calculator {
-            display: grid;
-            grid-template-columns: repeat(4, 80px);
-            grid-gap: 10px;
-            margin-top: 20px;
-        }
-
         input[type="text"] {
-            grid-column: span 4;
             padding: 10px;
-            font-size: 24px;
-            text-align: right;
-            background-color: #161b22;
             border: none;
-            color: #c9d1d9;
             border-radius: 5px;
+            width: 200px;
+            background-color: #161b22;
+            color: #c9d1d9;
+            margin-bottom: 15px;
+            font-size: 16px;
         }
 
-        button {
-            padding: 15px;
-            font-size: 18px;
-            background-color: #161b22;
-            color: #c9d1d9;
+        button[type="button"] {
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
+            background-color: #58a6ff;
+            color: #ffffff;
             cursor: pointer;
+            width: 200px;
+            font-size: 16px;
         }
 
-        button:hover {
+        button[type="button"]:hover {
             background-color: #4a90e2;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-size: 18px;
         }
     </style>
 </head>
@@ -113,35 +107,14 @@
     </div>
     <div class="right-side">
         <button id="translator-button">Translator</button>
+        <button id="calculator-button">Calculator</button>
     </div>
 </header>
 
 <div class="content">
     <h1>Calculator</h1>
-    <form id="calc-form" action="/cgi-bin/calculator" method="post">
-        <div id="calculator">
-            <input type="text" id="calc-input" name="calcInput" readonly>
-            <button type="button" value="1">1</button>
-            <button type="button" value="2">2</button>
-            <button type="button" value="3">3</button>
-            <button type="button" value="+">+</button>
-            <button type="button" value="4">4</button>
-            <button type="button" value="5">5</button>
-            <button type="button" value="6">6</button>
-            <button type="button" value="-">-</button>
-            <button type="button" value="7">7</button>
-            <button type="button" value="8">8</button>
-            <button type="button" value="9">9</button>
-            <button type="button" value="*">*</button>
-            <button type="button" value="C">C</button>
-            <button type="button" value="0">0</button>
-            <button type="button" value="=">=</button>
-            <button type="button" value="/">/</button>
-        </div>
-        <input type="hidden" id="calc-result" name="calcResult">
-    </form>
-
-    <div id="result"></div>
+    <input type="text" id="expression" placeholder="Enter expression" required>
+    <button type="button" id="calculate-btn">=</button>
 </div>
 
 <script>
@@ -172,35 +145,29 @@
         window.location.href = '/chatgpt';
     });
 
-    // Calculator functionality
-    const inputField = document.getElementById('calc-input');
-    const buttons = document.querySelectorAll('#calculator button');
-    const form = document.getElementById('calc-form');
-    let expression = '';
-
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            const value = button.value;
-            if (value === 'C') {
-                expression = '';
-                inputField.value = '';
-            } else if (value === '=') {
-                // Submit form to the backend to calculate the result
-                document.getElementById('calc-result').value = expression;
-                form.submit();
-            } else {
-                expression += value;
-                inputField.value = expression;
-            }
-        });
+    const calculatorButton = document.getElementById('calculator-button');
+    calculatorButton.addEventListener('click', () => {
+        window.location.href = '/calculator';
     });
 
-    // Fetch result from server and display it
-    const urlParams = new URLSearchParams(window.location.search);
-    const result = urlParams.get('result');
-    if (result) {
-        inputField.value = result;
-    }
+    // Handle the calculate button click
+    document.getElementById('calculate-btn').addEventListener('click', function() {
+        const expression = document.getElementById('expression').value;
+        
+        // Send the expression via AJAX to the backend
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/cgi-bin/calculator', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Update the input field with the result
+                document.getElementById('expression').value = xhr.responseText;
+            } else {
+                console.error('Error calculating the expression');
+            }
+        };
+        xhr.send('expression=' + encodeURIComponent(expression));
+    });
 </script>
 
 </body>
