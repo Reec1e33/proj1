@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reece's WebServer</title>
+    <title>Reece's ebServer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -76,9 +76,10 @@
     </div>
     <div class="right-side">
         <button id="translator-button">Translator</button> <!-- Button aligned to right with space -->
-        <button id="calculator-button"> roskam</button> <!-- New Calculator button -->
+        <button id="calculator-button"> button</button> <!-- New Calculator button -->
     </div>
 </header>
+
 
 <script>
     function updateClock() {
